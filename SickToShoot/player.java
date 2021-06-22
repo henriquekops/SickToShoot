@@ -40,7 +40,7 @@ public class player extends Actor
             timer--;
             if(timer == 0) {
                 MyWorld world = (MyWorld) getWorld();
-                world.endLvl();
+                world.setLoseScreen();
             }
         }
     }

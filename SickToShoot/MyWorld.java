@@ -7,26 +7,31 @@ public class MyWorld extends World
     private int loadPower;
     private int imageCount;
     private int livesLeft;
+    
     private GreenfootImage backgroundImage;
     private SuperShotReady superShotReady;
     private Life[] lives;
     private player player;
+    
     private GreenfootSound backgroundSound;
-    private GreenfootSound deadSound;
     private GreenfootSound hitSound;
+    
+    LoseScreen loseScreen;
+    WinScreen winScreen;
     
     public MyWorld(){    
         super(1000, 600, 1);
         this.superShotReady = new SuperShotReady();
         this.backgroundImage = new GreenfootImage("kk.jpg");
         this.backgroundSound = new GreenfootSound("igm.wav");
-        this.deadSound = new GreenfootSound("pDead.wav");
         this.hitSound = new GreenfootSound("pHit.wav");
         this.imageCount = 0;
         this.loadPower = 0;
         this.livesLeft = LIFE_COUNT;
         this.lives = new Life[3];
         this.player = new player();
+        this.loseScreen = new LoseScreen();
+        this.winScreen = new WinScreen();
         addObjectsToWorld();
         act();
     }
@@ -75,17 +80,10 @@ public class MyWorld extends World
     public void damage(){
         hitSound.play();
         livesLeft--;
-        if(livesLeft == 0){
-            deadSound.play();
-            backgroundSound.stop();
-            Fim fim = new Fim();
-            Greenfoot.setWorld(fim);
-        }
-        if(livesLeft == 2){
+        if(0 < livesLeft && livesLeft < LIFE_COUNT){
             removeObject(lives[livesLeft]);
-        }
-        if(livesLeft == 1){
-            removeObject(lives[livesLeft]);
+        } else {
+            setLoseScreen();
         }
     }
     
@@ -93,9 +91,14 @@ public class MyWorld extends World
         return loadPower;
     }
 
-    public void endLvl() {
+    public void setWinScreen() {
         backgroundSound.stop();
-        win win = new win();
-        Greenfoot.setWorld(win);
+        Greenfoot.setWorld(winScreen);
+    }
+    
+    public void setLoseScreen() {
+        backgroundSound.stop();
+        loseScreen.trigger();
+        Greenfoot.setWorld(loseScreen);
     }
 }
