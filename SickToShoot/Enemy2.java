@@ -42,7 +42,7 @@ public class Enemy2 extends Actor
             vida = 2;
             sound.play();
             getWorld().removeObject(this);
-            myWorld.dano();
+            myWorld.damage();
         }
     }
 }

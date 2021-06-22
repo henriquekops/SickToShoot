@@ -93,20 +93,21 @@ public class player extends Actor
             getWorld().addObject(ss,getX(),getY());
         }
     }
+    
 
     public void damage(){
         MyWorld world = (MyWorld) getWorld();
         if(isTouching(Enemy1.class)){
             removeTouching(Enemy1.class);
-            world.dano();
+            world.damage();
         }
         if(isTouching(Enemy2.class)){
             removeTouching(Enemy2.class);
-            world.dano();
+            world.damage();
         }
         if(isTouching(Enemy3.class)){
             removeTouching(Enemy3.class);
-            world.dano();
+            world.damage();
         }
     }
 

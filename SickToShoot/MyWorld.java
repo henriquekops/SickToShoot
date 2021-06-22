@@ -3,88 +3,98 @@ import java.util.Random;
 
 public class MyWorld extends World
 {
-    private int loadPower = 0;
-    SuperShotReady supershotready = new SuperShotReady();
-    private int imageCount = 0;
-    private GreenfootImage bgImage = new GreenfootImage("kk.jpg");
-    private int lifeCont = 3;
-    private Life life = new Life();
-    private Life life2 = new Life();
-    private Life life3 = new Life();
-
-    private GreenfootSound sound = new GreenfootSound("igm.wav");
-    private GreenfootSound dead = new GreenfootSound("pDead.wav");
-    private GreenfootSound hit = new GreenfootSound("pHit.wav");
+    private int LIFE_COUNT = 3;
+    private int loadPower;
+    private int imageCount;
+    private int livesLeft;
+    private GreenfootImage backgroundImage;
+    private SuperShotReady superShotReady;
+    private Life[] lives;
+    private player player;
+    private GreenfootSound backgroundSound;
+    private GreenfootSound deadSound;
+    private GreenfootSound hitSound;
+    
     public MyWorld(){    
-        super(1000, 600, 1); 
-        prepare();
-    }
-
-    private void prepare(){
-        player player = new player(); 
-        addObject(player,146,314);
-        player.setRotation(90);
-        addObject(supershotready,40,537);
-        addObject(life,30,30);
-        addObject(life2,70,30);
-        addObject(life3,110,30);
+        super(1000, 600, 1);
+        this.superShotReady = new SuperShotReady();
+        this.backgroundImage = new GreenfootImage("kk.jpg");
+        this.backgroundSound = new GreenfootSound("igm.wav");
+        this.deadSound = new GreenfootSound("pDead.wav");
+        this.hitSound = new GreenfootSound("pHit.wav");
+        this.imageCount = 0;
+        this.loadPower = 0;
+        this.livesLeft = LIFE_COUNT;
+        this.lives = new Life[3];
+        this.player = new player();
+        addObjectsToWorld();
         act();
-        sound.playLoop();
+    }
+    
+    private void addObjectsToWorld(){
+        this.player.setRotation(90);
+        addObject(this.player,146,314);
+        addObject(new SuperShotReady(),40,537);
+        for (int i = 0; i < LIFE_COUNT; i++ ) { 
+            lives[i] = new Life();
+            addObject(lives[i], (40*i)+30, 30);
+        }
+        //sound.playLoop();
     }
 
     public void act() {
         imageCount -= 5;
-        drawBackgroundImage();
+        drawBackground();
     }
 
-    public void drawBackgroundImage() {
-        if (imageCount > bgImage.getWidth()) {
-            imageCount += bgImage.getWidth();
+    public void drawBackground() {
+        if (imageCount > backgroundImage.getWidth()) {
+            imageCount += backgroundImage.getWidth();
         }
         int temp = imageCount;
         try{
-            getBackground().drawImage(bgImage, temp, 0);
-            getBackground().drawImage(bgImage, temp + bgImage.getWidth(), 0);
+            getBackground().drawImage(backgroundImage, temp, 0);
+            getBackground().drawImage(backgroundImage, temp + backgroundImage.getWidth(), 0);
         }catch(Exception e){}
     }
 
     public void setPower(){
         loadPower++;
         if(getPower() >= 5){
-            supershotready.accept();
+            superShotReady.accept();
         }
     }
 
-    public void setPower(boolean q){
-        if(q){
+    public void setPower(boolean used){
+        if(used){
             loadPower = 0;
-            supershotready.reset();
+            superShotReady.reset();
         }
     }
 
+    public void damage(){
+        hitSound.play();
+        livesLeft--;
+        if(livesLeft == 0){
+            deadSound.play();
+            backgroundSound.stop();
+            Fim fim = new Fim();
+            Greenfoot.setWorld(fim);
+        }
+        if(livesLeft == 2){
+            removeObject(lives[livesLeft]);
+        }
+        if(livesLeft == 1){
+            removeObject(lives[livesLeft]);
+        }
+    }
+    
     public int getPower(){
         return loadPower;
     }
 
-    public void dano(){
-        hit.play();
-        lifeCont--;
-        if(lifeCont == 0){
-            dead.play();
-            sound.stop();
-            Fim fim = new Fim();
-            Greenfoot.setWorld(fim);
-        }
-        if(lifeCont == 2){
-            removeObject(life3);
-        }
-        if(lifeCont == 1){
-            removeObject(life2);
-        }
-    }
-
-    public void endLvl(){
-        sound.stop();
+    public void endLvl() {
+        backgroundSound.stop();
         win win = new win();
         Greenfoot.setWorld(win);
     }

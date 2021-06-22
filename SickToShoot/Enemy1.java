@@ -27,7 +27,7 @@ public class Enemy1 extends Actor
         if(getX() <= 5){
             sound.play();
             getWorld().removeObject(this);
-            myWorld.dano();
+            myWorld.damage();
         }
     }  
 }
