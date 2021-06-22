@@ -16,7 +16,7 @@ public class Enemy1 extends Actor
 
     public void verify()throws Exception{
         Shoot shoot = (Shoot)getOneIntersectingObject(Shoot.class);
-        MyWorld myWorld = (MyWorld) getWorld();
+        GameScreen myWorld = (GameScreen) getWorld();
         sound.setVolume(75);
         if(shoot != null){
             getWorld().removeObject(shoot);

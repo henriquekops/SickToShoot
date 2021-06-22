@@ -1,7 +1,7 @@
 import greenfoot.*;
 import java.util.Random;
 
-public class MyWorld extends World
+public class GameScreen extends World
 {
     private int LIFE_COUNT = 3;
     private int loadPower;
@@ -19,7 +19,7 @@ public class MyWorld extends World
     LoseScreen loseScreen;
     WinScreen winScreen;
     
-    public MyWorld(){    
+    public GameScreen(){    
         super(1000, 600, 1);
         this.superShotReady = new SuperShotReady();
         this.backgroundImage = new GreenfootImage("kk.jpg");

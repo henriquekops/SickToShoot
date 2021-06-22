@@ -22,7 +22,7 @@ public class Enemy2 extends Actor
 
     public void verify()throws Exception{
         Shoot shoot = (Shoot)getOneIntersectingObject(Shoot.class);
-        MyWorld myWorld = (MyWorld) getWorld();
+        GameScreen myWorld = (GameScreen) getWorld();
         sound.setVolume(75);
         hit.setVolume(70);
         if(shoot != null){

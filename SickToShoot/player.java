@@ -30,7 +30,7 @@ public class player extends Actor
         spawn1++;
         spawn2++;
         spawn3++;
-        MyWorld myWorld = (MyWorld) getWorld();
+        GameScreen myWorld = (GameScreen) getWorld();
         if(myWorld.getPower() >= 5){
             superPower();
         }
@@ -39,7 +39,7 @@ public class player extends Actor
         {
             timer--;
             if(timer == 0) {
-                MyWorld world = (MyWorld) getWorld();
+                GameScreen world = (GameScreen) getWorld();
                 world.setLoseScreen();
             }
         }
@@ -71,7 +71,7 @@ public class player extends Actor
     }
 
     public void superPower(){
-        MyWorld myWorld = (MyWorld) getWorld();
+        GameScreen myWorld = (GameScreen) getWorld();
         SuperShotReady s = new SuperShotReady();
         boolean v = false;
         if(Greenfoot.isKeyDown("e")){
@@ -96,7 +96,7 @@ public class player extends Actor
     
 
     public void damage(){
-        MyWorld world = (MyWorld) getWorld();
+        GameScreen world = (GameScreen) getWorld();
         if(isTouching(Enemy1.class)){
             removeTouching(Enemy1.class);
             world.damage();
