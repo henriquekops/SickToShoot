@@ -1,56 +1,57 @@
 import greenfoot.*;
 
-public class Enemy3 extends Actor
-{
-    private int vida = 3;
-    private GreenfootSound sound = new GreenfootSound("eDead.wav");
-    private GreenfootSound hit = new GreenfootSound("hit.wav");
-    public void act(){
+public class Enemy3 extends Actor {
+    private int life, speedX, speedY;
+    private GreenfootSound sound, hit;
+    
+    public Enemy3() {
+        this.life = 3;
+        this.speedX = 7;
+        this.speedY = 3;
+        this.sound = new GreenfootSound("eDead.wav");
+        this.hit = new GreenfootSound("hit.wav");
+    }
+    
+    public void act() {
         followPlayer();
-        try{
-            verify();
-        }catch(Exception e){
-
-        }
+        try{ checkCollision(); } catch(Exception e ) {}
     }
 
-    public void followPlayer(){
-        player player = (player) getObjectsInRange(1200,  player.class).get(0);
+    public void followPlayer() {
+        Player player = (Player) getObjectsInRange(1200,  Player.class).get(0);
         if(player.getX() < getX()){
-            setLocation(getX()-7, getY());
+            setLocation(getX()-speedX, getY());
         }
         if(player.getX() > getX()){
-            setLocation(getX()+7, getY());
+            setLocation(getX()+speedX, getY());
         }
         if(player.getY() < getY()){
-            setLocation(getX(), getY()-3);
+            setLocation(getX(), getY()-speedY);
         }
         if(player.getY() > getY()){
-            setLocation(getX(), getY()+3);
+            setLocation(getX(), getY()+speedY);
         }
     }
 
-    public void verify()throws Exception{
+    public void checkCollision() {
         Shoot shoot = (Shoot)getOneIntersectingObject(Shoot.class);
-        GameScreen myWorld = (GameScreen) getWorld();
         sound.setVolume(75);
         hit.setVolume(70);
-        if(shoot != null){
-            getWorld().removeObject(shoot);
-            myWorld.setPower();
+        if(shoot != null) {
+            GameScreen world = (GameScreen) getWorld();
+            world.setPower();
             hit.play();
-            vida--;
+            life--;
+            getWorld().removeObject(shoot);
         }
-        if(vida == 0){
-            vida = 3;
+        if(life == 0) {
             sound.play();
             getWorld().removeObject(this);
-        }
-        if(getX() <= 5){
-            vida = 3;
+        } else if(getX() <= 5) {
+            GameScreen world = (GameScreen) getWorld();
             sound.play();
+            world.damage();
             getWorld().removeObject(this);
-            myWorld.damage();
         }
     }
 }

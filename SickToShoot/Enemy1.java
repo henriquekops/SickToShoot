@@ -2,32 +2,34 @@ import greenfoot.*;
 
 public class Enemy1 extends Actor
 {
-    private GreenfootSound sound = new GreenfootSound("eDead.wav");
+    private GreenfootSound sound;
+    
+    public Enemy1() {
+        this.sound = new GreenfootSound("eDead.wav");
+        this.sound.setVolume(75);
+    }
+    
     public void act() 
     {
         setRotation(getRotation()+3);
         setLocation(getX()-6, getY());
-        try{
-            verify();
-        }catch(Exception e){
-            
-        }
+        checkCollision();
     }
 
-    public void verify()throws Exception{
+    public void checkCollision() {
         Shoot shoot = (Shoot)getOneIntersectingObject(Shoot.class);
-        GameScreen myWorld = (GameScreen) getWorld();
-        sound.setVolume(75);
-        if(shoot != null){
+        
+        if(shoot != null) {
+            GameScreen world = (GameScreen) getWorld();
             getWorld().removeObject(shoot);
-            myWorld.setPower();
+            world.setPower();
             sound.play();
             getWorld().removeObject(this);
-        }
-        if(getX() <= 5){
+        } else if(getX() <= 5) {
+            GameScreen world = (GameScreen) getWorld();
             sound.play();
+            world.damage();
             getWorld().removeObject(this);
-            myWorld.damage();
         }
     }  
 }

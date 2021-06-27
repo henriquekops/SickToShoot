@@ -1,48 +1,49 @@
 import greenfoot.*;
 
-public class Enemy2 extends Actor
-{
-    private int vida = 2;
-    private GreenfootSound sound = new GreenfootSound("eDead.wav");
-    private GreenfootSound hit = new GreenfootSound("hit.wav");
-    public void act() 
-    {
-        move(7);
-        if(getRotation() > 135 && getRotation() < 225){
+public class Enemy2 extends Actor {
+    private int life, speed;
+    private GreenfootSound sound, hit;
+    
+    public Enemy2() {
+        this.life = 2;
+        this.speed = 7;
+        this.sound = new GreenfootSound("eDead.wav");
+        this.hit = new GreenfootSound("hit.wav");
+        sound.setVolume(75);
+        hit.setVolume(70);
+    }
+    
+    public void act() {
+        move(speed);
+        rotate();
+        try{ checkCollision(); } catch(Exception e ) {}
+    }
+    
+    public void rotate() {
+        if(getRotation() > 135 && getRotation() < 225) {
             setRotation(getRotation()+3);
-        }else{
+        } else {
             setRotation(getRotation()+8);
-        }
-        try{
-            verify();
-        }catch(Exception e){
-            
         }
     }
 
-    public void verify()throws Exception{
+    public void checkCollision() {
         Shoot shoot = (Shoot)getOneIntersectingObject(Shoot.class);
-        GameScreen myWorld = (GameScreen) getWorld();
-        sound.setVolume(75);
-        hit.setVolume(70);
-        if(shoot != null){
-            getWorld().removeObject(shoot);
-            myWorld.setPower();
+        if(shoot != null) {
+            GameScreen world = (GameScreen) getWorld();
+            world.setPower();
             hit.play();
-            vida--;
+            life--;
+            getWorld().removeObject(shoot);
         }
-        
-        if(vida == 0){
-            vida = 2;
+        if(life == 0){
             sound.play();
             getWorld().removeObject(this);
-        }
-        
-        if(getX() <= 5){
-            vida = 2;
+        } else if(getX() <= 5){
+            GameScreen world = (GameScreen) getWorld();
             sound.play();
+            world.damage();
             getWorld().removeObject(this);
-            myWorld.damage();
         }
     }
 }

@@ -1,37 +1,42 @@
 import greenfoot.*;
 import java.util.Random;
+import java.util.LinkedList;
 
-public class GameScreen extends World
-{
+public class GameScreen extends World {
     private int LIFE_COUNT = 3;
-    private int loadPower;
-    private int imageCount;
-    private int livesLeft;
+    private int spawnX;
+    private int loadPower, imageCount, livesLeft, spawn, spawnCooldown, spawnY;
+    
+    private Random r;
+    
+    private Life[] lives;
+    private LinkedList<Actor> enemies;
+    private Player player;
+    private SuperShotReady superShotReady;
     
     private GreenfootImage backgroundImage;
-    private SuperShotReady superShotReady;
-    private Life[] lives;
-    private player player;
-    
-    private GreenfootSound backgroundSound;
-    private GreenfootSound hitSound;
+    private GreenfootSound backgroundSound, hitSound;
     
     LoseScreen loseScreen;
     WinScreen winScreen;
     
     public GameScreen(){    
         super(1000, 600, 1);
+        this.r = new Random();
+        this.enemies = new LinkedList<Actor>();
         this.superShotReady = new SuperShotReady();
-        this.backgroundImage = new GreenfootImage("kk.jpg");
+        this.backgroundImage = new GreenfootImage("background.jpg");
         this.backgroundSound = new GreenfootSound("igm.wav");
         this.hitSound = new GreenfootSound("pHit.wav");
         this.imageCount = 0;
         this.loadPower = 0;
+        this.spawnCooldown = 0;
         this.livesLeft = LIFE_COUNT;
         this.lives = new Life[3];
-        this.player = new player();
+        this.player = new Player();
         this.loseScreen = new LoseScreen();
         this.winScreen = new WinScreen();
+        this.spawnX = 999;
         addObjectsToWorld();
         act();
     }
@@ -49,7 +54,9 @@ public class GameScreen extends World
 
     public void act() {
         imageCount -= 5;
+        spawnCooldown++;
         drawBackground();
+        spawnEnemy();
     }
 
     public void drawBackground() {
@@ -100,5 +107,24 @@ public class GameScreen extends World
         backgroundSound.stop();
         loseScreen.trigger();
         Greenfoot.setWorld(loseScreen);
+    }
+    
+    public void spawnEnemy() {
+        if (spawnCooldown >= 120) {
+            spawn = r.nextInt(3)+1;
+            spawnCooldown = 0;
+            spawnY = r.nextInt(580)+20;
+            switch(spawn) {
+                case 1:
+                    addObject(new Enemy1(),spawnX,spawnY);
+                    break;
+                case 2:
+                    addObject(new Enemy2(),spawnX,spawnY);
+                    break;
+                case 3:
+                    addObject(new Enemy3(),spawnX,spawnY);
+                    break;
+            }
+        } 
     }
 }

@@ -4,10 +4,10 @@ public class Shoot extends Actor{
     private int conf = 0;
     public void act(){
         move(20);
-        verify();
+        checkIfAtWorldEdge();
     }
 
-    public void verify(){
+    public void checkIfAtWorldEdge(){
         if(isAtEdge()){
             getWorld().removeObject(this);
         }

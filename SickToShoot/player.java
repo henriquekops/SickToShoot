@@ -1,131 +1,108 @@
 import greenfoot.*;
 import java.util.Random;
 
-public class player extends Actor
+public class Player extends Actor
 { 
-    private int cooldown = 0;
-    private int cooldownSS = 0;
-    private Random r = new Random();
-    private GreenfootSound sound = new GreenfootSound("shoot.wav");
-    private GreenfootSound ss = new GreenfootSound("ss.wav");
-    private GreenfootSound ss2 = new GreenfootSound("ss.wav");
-    private GreenfootSound ss3 = new GreenfootSound("ss.wav");
-    private int spawn1 = 0;
-    private int spawn2 = 0;
-    private int spawn3 = 0;
+    private int cooldownShot, cooldownSpecial;
+    private boolean activeShot, activeSpecial;
+    private Random random;
+    private GreenfootSound shotSound;
+    GameScreen gameScreen;
+    int speed;
+    //private int spawn1;// = 0;
+    //private int spawn2;// = 0;
+    //private int spawn3;// = 0;
     
-    private int timer = 1580;
+    public Player() {
+        cooldownShot = 0;
+        cooldownSpecial = 0;
+        random = new Random();
+        shotSound = new GreenfootSound("shoot.wav");
+        speed = 6;
+        shotSound.setVolume(60);
+        activeShot = false;
+        activeSpecial = false;
+    }
+    
     public void act()
     {
-        ss.setVolume(80);
-        ss2.setVolume(80);
-        ss3.setVolume(80);
-        movement();
+        gameScreen = (GameScreen) getWorld();
+        move();
         shoot();
-        contss();
+        special(gameScreen);
         damage();
-        cooldown--;
-        cooldownSS--;
-        spawn();
-        spawn1++;
-        spawn2++;
-        spawn3++;
-        GameScreen myWorld = (GameScreen) getWorld();
-        if(myWorld.getPower() >= 5){
-            superPower();
+        if (cooldownShot > 0) {
+            cooldownShot--;
         }
+        if (cooldownSpecial > 0) {
+            cooldownSpecial--;
+        }
+        //spawn();
+        //spawn1++;
+        //spawn2++;
+        //spawn3++;
+        //if(gameScreen.getPower() >= 5){
+        //    superPower(gameScreen);
+        //}
         
-        if (timer>0)
-        {
-            timer--;
-            if(timer == 0) {
-                GameScreen world = (GameScreen) getWorld();
-                world.setLoseScreen();
-            }
-        }
+        //if (timer>0)
+        //{
+        //    timer--;
+        //    if(timer == 0) {
+        //        gameScreen.setLoseScreen();
+        //    }
+        //}
     }
 
-    public void movement(){
-        if(Greenfoot.isKeyDown("s")){
-            move(6);
+    public void move() {
+        if(Greenfoot.isKeyDown("s")) {
+            move(speed);
         }
-        if(Greenfoot.isKeyDown("w")){
-            move(-6);
+        if(Greenfoot.isKeyDown("w")) {
+            move(-speed);
         }
-        if(Greenfoot.isKeyDown("d")){
-            setLocation(getX()+6, getY());
+        if(Greenfoot.isKeyDown("d")) {
+            setLocation(getX()+speed, getY());
         }
-        if(Greenfoot.isKeyDown("a")){
-            setLocation(getX()-6, getY());
+        if(Greenfoot.isKeyDown("a")) {
+            setLocation(getX()-speed, getY());
         }
     }
 
     public void shoot(){
-        Shoot shoot = new Shoot();
-        if(Greenfoot.isKeyDown("space")  && cooldown <= 0){
-            sound.setVolume(60);
-            sound.play();
-            getWorld().addObject(shoot,getX(),getY());
-            cooldown = 15;
+        if(Greenfoot.isKeyDown("space") && cooldownShot == 0) {
+            getWorld().addObject(new Shoot(), getX(), getY());
+            shotSound.play();
+            cooldownShot = 20;
         }
     }
 
-    public void superPower(){
-        GameScreen myWorld = (GameScreen) getWorld();
-        SuperShotReady s = new SuperShotReady();
-        boolean v = false;
-        if(Greenfoot.isKeyDown("e")){
-            ss.play();
-            specialShoot ss = new specialShoot();
-            getWorld().addObject(ss,getX(),getY());
-            myWorld.setPower(true);
-            v = true;
-            cooldownSS = 58;
-        }       
-    }
-
-    public void contss(){
-        if(cooldownSS== 40 || cooldownSS == 20){
-            if(cooldownSS == 20){
-                ss2.play();
-            } else { ss3.play();}
-            specialShoot ss = new specialShoot();
-            getWorld().addObject(ss,getX(),getY());
+    public void special(GameScreen gameScreen) {
+        if(Greenfoot.isKeyDown("e") && !activeSpecial) {//&& gameScreen.getPower() >= 5) {
+            activeSpecial = true;
+            gameScreen.setPower(true);
+            getWorld().addObject(new SpecialShot(), getX(), getY());
+            cooldownSpecial = 60;
+        } else if (!Greenfoot.isKeyDown("e") && activeSpecial) {
+            activeSpecial = false;
+        }
+        if (cooldownSpecial == 40 || cooldownSpecial == 20) {
+            getWorld().addObject(new SpecialShot(), getX(), getY());
         }
     }
-    
 
-    public void damage(){
-        GameScreen world = (GameScreen) getWorld();
+    public void damage() {
         if(isTouching(Enemy1.class)){
             removeTouching(Enemy1.class);
-            world.damage();
+            gameScreen.damage();
         }
         if(isTouching(Enemy2.class)){
             removeTouching(Enemy2.class);
-            world.damage();
+            gameScreen.damage();
         }
         if(isTouching(Enemy3.class)){
             removeTouching(Enemy3.class);
-            world.damage();
-        }
-    }
-
-    public void spawn(){
-        if(spawn1 > 150){
-            Enemy1 enemy1 = new Enemy1();
-            getWorld().addObject(enemy1,999,r.nextInt(580)+20);
-            spawn1 = 0;
-        }
-        if(spawn2 == 225){
-            Enemy2 enemy2 = new Enemy2();
-            getWorld().addObject(enemy2,999,r.nextInt(580)+20);
-            spawn2 = 0;
-        }
-        if(spawn3 == 200){
-            Enemy3 enemy3 = new Enemy3();
-            getWorld().addObject(enemy3,999,r.nextInt(580)+20);
-            spawn3 = 0;
+            gameScreen.damage();
         }
     }
 } 
