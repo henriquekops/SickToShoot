@@ -9,8 +9,7 @@ public class Enemy1 extends Actor
         this.sound.setVolume(75);
     }
     
-    public void act() 
-    {
+    public void act() {
         setRotation(getRotation()+3);
         setLocation(getX()-6, getY());
         checkCollision();

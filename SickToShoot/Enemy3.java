@@ -14,7 +14,7 @@ public class Enemy3 extends Actor {
     
     public void act() {
         followPlayer();
-        try{ checkCollision(); } catch(Exception e ) {}
+        checkCollision();
     }
 
     public void followPlayer() {

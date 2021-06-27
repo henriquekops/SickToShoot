@@ -51,6 +51,7 @@ public class GameScreen extends World {
         spawnCooldown++;
         drawBackground();
         spawnEnemy();
+        checkPlayerAlive();
     }
     
     public void checkPlayerAlive() {

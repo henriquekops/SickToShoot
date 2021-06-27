@@ -5,7 +5,7 @@ public class Player extends Actor
 { 
     private int LIFE_COUNT = 3;
     private int cooldownShot, cooldownSpecial, speed, livesLeft;
-    private boolean activeShot, activeSpecial, hit;
+    private boolean activeShot, activeSpecial;
     public boolean alive;
     private Random random;
     private GreenfootSound shotSound, hitSound;
@@ -24,7 +24,6 @@ public class Player extends Actor
         this.activeShot = false;
         this.activeSpecial = false;
         this.alive = true;
-        this.hit = false;
         this.lives = new Life[LIFE_COUNT];
         addLivesToWorld();
     }
@@ -93,22 +92,24 @@ public class Player extends Actor
     public void checkCollision() {
         if(isTouching(Enemy1.class)){
             removeTouching(Enemy1.class);
+            damage();
         } else if(isTouching(Enemy2.class)){
             removeTouching(Enemy2.class);
+            damage();
         } else if(isTouching(Enemy3.class)){
             removeTouching(Enemy3.class);
+            damage();
         }
     }
     
     public void damage() {
-        hit = true;
         hitSound.play();
         livesLeft--;
-        if(0 < livesLeft && livesLeft < LIFE_COUNT){
-            alive = true;
+        if(0 < livesLeft) {
             getWorld().removeObject(lives[livesLeft]);
         } else {
             alive = false;
+            getWorld().removeObject(lives[livesLeft]);
         }
     }
 } 
