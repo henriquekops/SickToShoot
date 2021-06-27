@@ -3,25 +3,30 @@ import java.util.Random;
 
 public class Player extends Actor
 { 
-    private int cooldownShot, cooldownSpecial;
-    private boolean activeShot, activeSpecial;
+    private int LIFE_COUNT = 3;
+    private int cooldownShot, cooldownSpecial, speed, livesLeft;
+    private boolean activeShot, activeSpecial, hit;
+    public boolean alive;
     private Random random;
-    private GreenfootSound shotSound;
-    GameScreen gameScreen;
-    int speed;
-    //private int spawn1;// = 0;
-    //private int spawn2;// = 0;
-    //private int spawn3;// = 0;
+    private GreenfootSound shotSound, hitSound;
+    private GameScreen gameScreen;
+    public Life[] lives;
     
     public Player() {
-        cooldownShot = 0;
-        cooldownSpecial = 0;
-        random = new Random();
-        shotSound = new GreenfootSound("shoot.wav");
-        speed = 6;
-        shotSound.setVolume(60);
-        activeShot = false;
-        activeSpecial = false;
+        this.cooldownShot = 0;
+        this.livesLeft = LIFE_COUNT;
+        this.cooldownSpecial = 0;
+        this.random = new Random();
+        this.shotSound = new GreenfootSound("shoot.wav");
+        this.hitSound = new GreenfootSound("pHit.wav");
+        this.speed = 6;
+        this.shotSound.setVolume(60);
+        this.activeShot = false;
+        this.activeSpecial = false;
+        this.alive = true;
+        this.hit = false;
+        this.lives = new Life[LIFE_COUNT];
+        addLivesToWorld();
     }
     
     public void act()
@@ -30,28 +35,22 @@ public class Player extends Actor
         move();
         shoot();
         special(gameScreen);
-        damage();
+        checkCollision();
         if (cooldownShot > 0) {
             cooldownShot--;
         }
         if (cooldownSpecial > 0) {
             cooldownSpecial--;
         }
-        //spawn();
-        //spawn1++;
-        //spawn2++;
-        //spawn3++;
         //if(gameScreen.getPower() >= 5){
         //    superPower(gameScreen);
         //}
-        
-        //if (timer>0)
-        //{
-        //    timer--;
-        //    if(timer == 0) {
-        //        gameScreen.setLoseScreen();
-        //    }
-        //}
+    }
+    
+    public void addLivesToWorld() {
+        for (int i = 0; i < LIFE_COUNT; i++) {
+            lives[i] = new Life();
+        }
     }
 
     public void move() {
@@ -91,18 +90,25 @@ public class Player extends Actor
         }
     }
 
-    public void damage() {
+    public void checkCollision() {
         if(isTouching(Enemy1.class)){
             removeTouching(Enemy1.class);
-            gameScreen.damage();
-        }
-        if(isTouching(Enemy2.class)){
+        } else if(isTouching(Enemy2.class)){
             removeTouching(Enemy2.class);
-            gameScreen.damage();
-        }
-        if(isTouching(Enemy3.class)){
+        } else if(isTouching(Enemy3.class)){
             removeTouching(Enemy3.class);
-            gameScreen.damage();
+        }
+    }
+    
+    public void damage() {
+        hit = true;
+        hitSound.play();
+        livesLeft--;
+        if(0 < livesLeft && livesLeft < LIFE_COUNT){
+            alive = true;
+            getWorld().removeObject(lives[livesLeft]);
+        } else {
+            alive = false;
         }
     }
 } 

@@ -42,7 +42,7 @@ public class Enemy2 extends Actor {
         } else if(getX() <= 5){
             GameScreen world = (GameScreen) getWorld();
             sound.play();
-            world.damage();
+            world.player.damage();
             getWorld().removeObject(this);
         }
     }

@@ -3,19 +3,17 @@ import java.util.Random;
 import java.util.LinkedList;
 
 public class GameScreen extends World {
-    private int LIFE_COUNT = 3;
     private int spawnX;
-    private int loadPower, imageCount, livesLeft, spawn, spawnCooldown, spawnY;
+    private int loadPower, imageCount, spawn, spawnCooldown, spawnY;
     
     private Random r;
     
-    private Life[] lives;
     private LinkedList<Actor> enemies;
-    private Player player;
+    public Player player;
     private SuperShotReady superShotReady;
     
     private GreenfootImage backgroundImage;
-    private GreenfootSound backgroundSound, hitSound;
+    private GreenfootSound backgroundSound;
     
     LoseScreen loseScreen;
     WinScreen winScreen;
@@ -27,12 +25,9 @@ public class GameScreen extends World {
         this.superShotReady = new SuperShotReady();
         this.backgroundImage = new GreenfootImage("background.jpg");
         this.backgroundSound = new GreenfootSound("igm.wav");
-        this.hitSound = new GreenfootSound("pHit.wav");
         this.imageCount = 0;
         this.loadPower = 0;
         this.spawnCooldown = 0;
-        this.livesLeft = LIFE_COUNT;
-        this.lives = new Life[3];
         this.player = new Player();
         this.loseScreen = new LoseScreen();
         this.winScreen = new WinScreen();
@@ -45,9 +40,8 @@ public class GameScreen extends World {
         this.player.setRotation(90);
         addObject(this.player,146,314);
         addObject(new SuperShotReady(),40,537);
-        for (int i = 0; i < LIFE_COUNT; i++ ) { 
-            lives[i] = new Life();
-            addObject(lives[i], (40*i)+30, 30);
+        for (int i = 0; i < player.lives.length; i++) {
+            addObject(player.lives[i], (40*i)+30, 30);
         }
         //sound.playLoop();
     }
@@ -57,6 +51,12 @@ public class GameScreen extends World {
         spawnCooldown++;
         drawBackground();
         spawnEnemy();
+    }
+    
+    public void checkPlayerAlive() {
+        if (!player.alive) {
+            setLoseScreen();
+        }
     }
 
     public void drawBackground() {
@@ -81,16 +81,6 @@ public class GameScreen extends World {
         if(used){
             loadPower = 0;
             superShotReady.reset();
-        }
-    }
-
-    public void damage(){
-        hitSound.play();
-        livesLeft--;
-        if(0 < livesLeft && livesLeft < LIFE_COUNT){
-            removeObject(lives[livesLeft]);
-        } else {
-            setLoseScreen();
         }
     }
     
