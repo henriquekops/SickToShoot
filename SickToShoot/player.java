@@ -35,15 +35,20 @@ public class Player extends Actor
         shoot();
         special(gameScreen);
         checkCollision();
+        setCooldownShot();
+        setCooldownSpecial();
+    }
+    
+    private void setCooldownShot() {
         if (cooldownShot > 0) {
             cooldownShot--;
         }
+    }
+    
+    private void setCooldownSpecial() {
         if (cooldownSpecial > 0) {
             cooldownSpecial--;
         }
-        //if(gameScreen.getPower() >= 5){
-        //    superPower(gameScreen);
-        //}
     }
     
     public void addLivesToWorld() {
@@ -76,11 +81,10 @@ public class Player extends Actor
     }
 
     public void special(GameScreen gameScreen) {
-        if(Greenfoot.isKeyDown("e") && !activeSpecial) {//&& gameScreen.getPower() >= 5) {
+        if(Greenfoot.isKeyDown("e") && !activeSpecial && gameScreen.specialIndicator.checkPower()) {
             activeSpecial = true;
-            gameScreen.setPower(true);
-            getWorld().addObject(new SpecialShot(), getX(), getY());
             cooldownSpecial = 60;
+            getWorld().addObject(new SpecialShot(), getX(), getY());
         } else if (!Greenfoot.isKeyDown("e") && activeSpecial) {
             activeSpecial = false;
         }

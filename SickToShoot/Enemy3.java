@@ -10,6 +10,8 @@ public class Enemy3 extends Actor {
         this.speedY = 3;
         this.sound = new GreenfootSound("eDead.wav");
         this.hit = new GreenfootSound("hit.wav");
+        sound.setVolume(75);
+        hit.setVolume(70);
     }
     
     public void act() {
@@ -35,11 +37,9 @@ public class Enemy3 extends Actor {
 
     public void checkCollision() {
         Shoot shoot = (Shoot)getOneIntersectingObject(Shoot.class);
-        sound.setVolume(75);
-        hit.setVolume(70);
         if(shoot != null) {
             GameScreen world = (GameScreen) getWorld();
-            world.setPower();
+            world.specialIndicator.increasePower();
             hit.play();
             life--;
             getWorld().removeObject(shoot);
@@ -49,8 +49,8 @@ public class Enemy3 extends Actor {
             getWorld().removeObject(this);
         } else if(getX() <= 5) {
             GameScreen world = (GameScreen) getWorld();
-            sound.play();
             world.player.damage();
+            sound.play();
             getWorld().removeObject(this);
         }
     }

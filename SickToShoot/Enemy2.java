@@ -16,7 +16,7 @@ public class Enemy2 extends Actor {
     public void act() {
         move(speed);
         rotate();
-        try{ checkCollision(); } catch(Exception e ) {}
+        checkCollision();
     }
     
     public void rotate() {
@@ -31,7 +31,7 @@ public class Enemy2 extends Actor {
         Shoot shoot = (Shoot)getOneIntersectingObject(Shoot.class);
         if(shoot != null) {
             GameScreen world = (GameScreen) getWorld();
-            world.setPower();
+            world.specialIndicator.increasePower();
             hit.play();
             life--;
             getWorld().removeObject(shoot);
@@ -41,8 +41,8 @@ public class Enemy2 extends Actor {
             getWorld().removeObject(this);
         } else if(getX() <= 5){
             GameScreen world = (GameScreen) getWorld();
-            sound.play();
             world.player.damage();
+            sound.play();
             getWorld().removeObject(this);
         }
     }

@@ -4,9 +4,13 @@ public class Enemy1 extends Actor
 {
     private GreenfootSound sound;
     
+    private int rotationSpeed, moveSpeed;
+    
     public Enemy1() {
         this.sound = new GreenfootSound("eDead.wav");
         this.sound.setVolume(75);
+        this.rotationSpeed = 3;
+        this.moveSpeed = 6;
     }
     
     public void act() {
@@ -19,16 +23,20 @@ public class Enemy1 extends Actor
         Shoot shoot = (Shoot)getOneIntersectingObject(Shoot.class);
         
         if(shoot != null) {
-            GameScreen world = (GameScreen) getWorld();
-            getWorld().removeObject(shoot);
-            world.setPower();
+            GameScreen gameScreen = (GameScreen) getWorld();
+            gameScreen.specialIndicator.increasePower();
             sound.play();
+            getWorld().removeObject(shoot);
             getWorld().removeObject(this);
         } else if(getX() <= 5) {
             GameScreen world = (GameScreen) getWorld();
-            sound.play();
             world.player.damage();
+            sound.play();
             getWorld().removeObject(this);
         }
     }  
+    
+    public void move() {
+        setRotation(getRotation()+3);
+    }
 }
