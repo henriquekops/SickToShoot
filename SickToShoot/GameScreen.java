@@ -2,8 +2,7 @@ import greenfoot.*;
 import java.util.Random;
 
 public class GameScreen extends World {
-    private int spawnX;
-    private int loadPower, imageCount, spawn, spawnCooldown, spawnY;
+    private int loadPower, imageCount, spawn, spawnCooldown, spawnX, spawnY, bgSpeed;
     
     private Random r;
 
@@ -27,6 +26,7 @@ public class GameScreen extends World {
         this.loseScreen = new LoseScreen();
         this.winScreen = new WinScreen();
         this.spawnX = 999;
+        this.bgSpeed = 5;
         addPlayer();
         addSpecialIndicator();
         addPlayerLives();
@@ -52,10 +52,10 @@ public class GameScreen extends World {
     }
 
     public void act() {
-        imageCount -= 5;
+        imageCount -= bgSpeed;
         spawnCooldown++;
         drawBackground();
-        spawnEnemy();
+        //spawnEnemy();
         checkPlayerAlive();
     }
     
@@ -66,12 +66,10 @@ public class GameScreen extends World {
     }
 
     public void drawBackground() {
-        if (imageCount > backgroundImage.getWidth()) {
-            imageCount += backgroundImage.getWidth();
+        if ((-1*imageCount) == backgroundImage.getWidth()) {
+            imageCount = 0;
         }
-        int temp = imageCount;
-        getBackground().drawImage(backgroundImage, temp, 0);
-        getBackground().drawImage(backgroundImage, temp + backgroundImage.getWidth(), 0);
+        getBackground().drawImage(backgroundImage, imageCount, 0);
     }
 
     public void setWinScreen() {
