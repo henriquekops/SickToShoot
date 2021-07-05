@@ -3,7 +3,7 @@ import java.util.Random;
 import java.io.*;
 
 public class GameScreen extends World {
-    private int loadPower, imageCount, spawn, spawnCooldown, spawnX, spawnY, bgSpeed, lastPlayerScore;
+    private int loadPower, imageCount, spawn, spawnCooldown, spawnX, spawnY, bgSpeed, lastPlayerScore, spawnThreshold, tgtScore;
     
     private Random r;
 
@@ -30,6 +30,8 @@ public class GameScreen extends World {
         this.winScreen = new WinScreen();
         this.spawnX = 999;
         this.bgSpeed = 5;
+        this.tgtScore = 20;
+        this.spawnThreshold = 120;
         addPlayer();
         addSpecialIndicator();
         addPlayerLives();
@@ -79,6 +81,15 @@ public class GameScreen extends World {
         }
     }
     
+    public void checkPlayerScore() {
+        if (player.score > tgtScore) {
+            tgtScore += tgtScore;
+            if (spawnThreshold > 30) {
+                spawnThreshold -= 20;
+            }
+        }
+    }
+    
     public void addScore() {
         this.scoreText = new Text();
         this.placeholder = new Placeholder();
@@ -106,6 +117,7 @@ public class GameScreen extends World {
             this.scoreText.draw();
         }
         lastPlayerScore = player.score;
+        checkPlayerScore();
     }
     
     public void checkPlayerAlive() {
@@ -139,7 +151,7 @@ public class GameScreen extends World {
     }
     
     public void spawnEnemy() {
-        if (spawnCooldown >= 120) {
+        if (spawnCooldown >= spawnThreshold) {
             spawn = r.nextInt(3)+1;
             spawnCooldown = 0;
             spawnY = r.nextInt(201)+200;
