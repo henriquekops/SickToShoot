@@ -32,6 +32,7 @@ public class Enemy2 extends Actor {
         if(shoot != null) {
             GameScreen world = (GameScreen) getWorld();
             world.specialIndicator.increasePower();
+            world.player.setScore(2);
             hit.play();
             life--;
             getWorld().removeObject(shoot);

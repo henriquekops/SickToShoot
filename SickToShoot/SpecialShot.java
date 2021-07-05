@@ -42,12 +42,18 @@ public class SpecialShot extends Actor {
     public void checkCollision()
     {
         if(isTouching(Enemy1.class)) {
+            GameScreen gameScreen = (GameScreen) getWorld();
+            gameScreen.player.setScore(5);
             removeTouching(Enemy1.class);
         }
-        if(isTouching(Enemy2.class)){
+        if(isTouching(Enemy2.class)) {
+            GameScreen gameScreen = (GameScreen) getWorld();
+            gameScreen.player.setScore(5);
             removeTouching(Enemy2.class);
         }
-        if(isTouching(Enemy3.class)){
+        if(isTouching(Enemy3.class)) {
+            GameScreen gameScreen = (GameScreen) getWorld();
+            gameScreen.player.setScore(5);
             removeTouching(Enemy3.class);
         }
     }

@@ -7,12 +7,13 @@ public class Player extends Actor
     private int cooldownShot, cooldownSpecial, speed, livesLeft;
     private boolean activeShot, activeSpecial;
     public boolean alive;
+    public int score, bestScore;
     private Random random;
     private GreenfootSound shotSound, hitSound;
     private GameScreen gameScreen;
     public Life[] lives;
     
-    public Player() {
+    public Player(int score) {
         this.cooldownShot = 0;
         this.livesLeft = LIFE_COUNT;
         this.cooldownSpecial = 0;
@@ -20,6 +21,8 @@ public class Player extends Actor
         this.shotSound = new GreenfootSound("shoot.wav");
         this.hitSound = new GreenfootSound("pHit.wav");
         this.speed = 6;
+        this.score = 0;
+        this.bestScore = score;
         this.shotSound.setVolume(60);
         this.activeShot = false;
         this.activeSpecial = false;
@@ -49,6 +52,10 @@ public class Player extends Actor
         if (cooldownSpecial > 0) {
             cooldownSpecial--;
         }
+    }
+    
+    public void setScore(int increment) {
+        score += increment;
     }
     
     public void addLivesToWorld() {

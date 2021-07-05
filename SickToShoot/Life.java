@@ -1,9 +1,5 @@
 import greenfoot.*;
 
-public class Life extends Actor
-{
-    public void act() 
-    {
-        // Do nothing
-    }    
+public class Life extends Actor{ 
+    // do nothing 
 }

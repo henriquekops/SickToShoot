@@ -14,8 +14,7 @@ public class Enemy1 extends Actor
     }
     
     public void act() {
-        setRotation(getRotation()+3);
-        setLocation(getX()-6, getY());
+        move();        
         checkCollision();
     }
 
@@ -25,6 +24,7 @@ public class Enemy1 extends Actor
         if(shoot != null) {
             GameScreen gameScreen = (GameScreen) getWorld();
             gameScreen.specialIndicator.increasePower();
+            gameScreen.player.setScore(1);
             sound.play();
             getWorld().removeObject(shoot);
             getWorld().removeObject(this);
@@ -38,5 +38,6 @@ public class Enemy1 extends Actor
     
     public void move() {
         setRotation(getRotation()+3);
+        setLocation(getX()-6, getY());
     }
 }
