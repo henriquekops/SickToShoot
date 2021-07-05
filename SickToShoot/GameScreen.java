@@ -9,6 +9,7 @@ public class GameScreen extends World {
 
     public Player player;
     public Text scoreText;
+    public Placeholder placeholder;
     public SpecialIndicator specialIndicator;
     
     private GreenfootImage backgroundImage, scoreLargeImage, score, bestScore;
@@ -80,11 +81,13 @@ public class GameScreen extends World {
     
     public void addScore() {
         this.scoreText = new Text();
+        this.placeholder = new Placeholder();
+        addObject(this.placeholder, 900, 30);
         addObject(this.scoreText, 500, 300);
         this.score = this.scoreText.createText("Score: " + player.score, 24);
         this.bestScore = this.scoreText.createText("Best Score: " + player.bestScore, 24);
-        this.scoreText.addText(this.score, 820, 30);
-        this.scoreText.addText(this.bestScore, 820, 60);
+        this.scoreText.addText(this.score, 810, 30);
+        this.scoreText.addText(this.bestScore, 810, 60);
         this.scoreText.draw();
     }
     
