@@ -2,19 +2,20 @@ import greenfoot.Actor;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
+import greenfoot.World;
 
 class control extends Actor {
   private GreenfootImage on = new GreenfootImage("controlOn.png");
-
   private GreenfootImage off = new GreenfootImage("controlOff.png");
-
+  private World w;
   private int mousex;
-
   private int mousey;
-
   private int x;
-
   private int y;
+  
+  public control (World w) {
+      this.w = w;
+  }
 
   public void act() {
     if (Greenfoot.mouseMoved(null)) {
@@ -30,6 +31,6 @@ class control extends Actor {
       } 
     } 
     if (Greenfoot.mouseClicked(this))
-      Greenfoot.setWorld(new controls()); 
+      Greenfoot.setWorld(w); 
   }
 }

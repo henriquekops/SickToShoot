@@ -2,19 +2,20 @@ import greenfoot.Actor;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
+import greenfoot.World;
 
 public class developers extends Actor {
   private GreenfootImage on = new GreenfootImage("devOn.png");
-
   private GreenfootImage off = new GreenfootImage("devOff.png");
-
+  private World w;
   private int mousex;
-
   private int mousey;
-
   private int x;
-
   private int y;
+  
+  public developers(World w) {
+    this.w = w;
+  }
 
   public void act() {
     if (Greenfoot.mouseMoved(null)) {
@@ -29,7 +30,8 @@ public class developers extends Actor {
         setImage(this.off);
       } 
     } 
-    if (Greenfoot.mouseClicked(this))
-      Greenfoot.setWorld(new dev()); 
+    if (Greenfoot.mouseClicked(this)) {
+      Greenfoot.setWorld(w); 
+    }
   }
 }

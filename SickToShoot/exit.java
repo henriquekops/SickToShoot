@@ -6,26 +6,17 @@ import greenfoot.MouseInfo;
 
 public class exit extends Actor {
   private GreenfootImage on = new GreenfootImage("homeOn.png");
-
   private GreenfootImage off = new GreenfootImage("homeOff.png");
-
   private int mousex;
-
   private int mousey;
-
   private int x;
-
   private int y;
-
-  private boolean v = true;
-
-  private GreenfootSound sound = new GreenfootSound("winner.wav");
+  //private boolean v = true;
 
   public void act() {
-    if (this.v) {
-      this.sound.play();
-      this.v = false;
-    } 
+    //if (this.v) {
+    //  this.v = false;
+    //} 
     if (Greenfoot.mouseMoved(null)) {
       MouseInfo mouse = Greenfoot.getMouseInfo();
       int mousex = mouse.getX();

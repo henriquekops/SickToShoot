@@ -1,9 +1,12 @@
 import greenfoot.World;
 
 public class dev extends World {
-  public dev() {
+  World w;
+  
+  public dev(World w) {
     super(1000, 600, 1);
-    back back = new back();
+    this.w = w;
+    back back = new back(w);
     addObject(back, 45, 30);
   }
 }

@@ -10,7 +10,7 @@ public class SpecialShot extends Actor {
         spriteUp = new GreenfootImage("hamburger.png");
         spriteDown = new GreenfootImage("hamburger2.png");
         sound = new GreenfootSound("ss.wav");
-        sound.setVolume(80);
+        sound.setVolume(50);
         sound.play();
         spriteInvert = 0;
         speed = 15;

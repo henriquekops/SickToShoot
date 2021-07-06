@@ -8,7 +8,7 @@ public class Enemy1 extends Actor
     
     public Enemy1() {
         this.sound = new GreenfootSound("eDead.wav");
-        this.sound.setVolume(75);
+        this.sound.setVolume(50);
         this.rotationSpeed = 3;
         this.moveSpeed = 6;
     }

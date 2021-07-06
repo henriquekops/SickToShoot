@@ -23,7 +23,8 @@ public class Player extends Actor
         this.speed = 6;
         this.score = 0;
         this.bestScore = score;
-        this.shotSound.setVolume(60);
+        this.hitSound.setVolume(70);
+        this.shotSound.setVolume(50);
         this.activeShot = false;
         this.activeSpecial = false;
         this.alive = true;

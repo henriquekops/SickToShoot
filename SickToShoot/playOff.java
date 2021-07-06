@@ -29,7 +29,10 @@ public class playOff extends Actor {
         setImage(this.off);
       } 
     } 
-    if (Greenfoot.mouseClicked(this))
+    if (Greenfoot.mouseClicked(this)) {
+      menu m = (menu) getWorld();
+      m.sound.stop();
       Greenfoot.setWorld(new load()); 
+    }
   }
 }

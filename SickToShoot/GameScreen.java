@@ -36,7 +36,8 @@ public class GameScreen extends World {
         addSpecialIndicator();
         addPlayerLives();
         addScore();
-        //sound.playLoop();
+        this.backgroundSound.setVolume(15);
+        this.backgroundSound.playLoop();
         act();
     }
     

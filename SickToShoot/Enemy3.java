@@ -10,8 +10,8 @@ public class Enemy3 extends Actor {
         this.speedY = 3;
         this.sound = new GreenfootSound("eDead.wav");
         this.hit = new GreenfootSound("hit.wav");
-        sound.setVolume(75);
-        hit.setVolume(70);
+        sound.setVolume(50);
+        hit.setVolume(50);
     }
     
     public void act() {
